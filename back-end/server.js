@@ -14,7 +14,8 @@ const server = http.createServer(app);
 // ✅ CORS Setup for Vercel and Localhost
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://livechat-three.vercel.app',  // Removed trailing slash here
+  'https://livechat-three.vercel.app',
+  'https://mern-week5-assignment.onrender.com', // add your deployed frontend URL here without trailing slash
 ];
 
 app.use(cors({
@@ -24,7 +25,7 @@ app.use(cors({
     // allow requests with no origin (like curl or postman)
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.indexOf(origin) === -1) {
+    if (!allowedOrigins.includes(origin)) {
       const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
       console.error(msg);
       return callback(new Error(msg), false);
@@ -63,13 +64,15 @@ const onlineUsers = new Map();
 io.on('connection', async (socket) => {
   console.log('🟢 New client connected:', socket.id);
 
-  // Send chat history
+  // Send chat history with safe timestamp formatting
   try {
     const messages = await Message.find().sort({ timestamp: 1 }).limit(50);
     socket.emit('chatHistory', messages.map(msg => ({
       user: msg.user,
       message: msg.message,
-      timestamp: msg.timestamp.toLocaleTimeString(),
+      timestamp: msg.timestamp instanceof Date
+        ? msg.timestamp.toLocaleTimeString()
+        : new Date(msg.timestamp).toLocaleTimeString(),
     })));
   } catch (err) {
     console.error('Error loading messages:', err);
