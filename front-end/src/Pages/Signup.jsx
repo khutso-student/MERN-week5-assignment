@@ -8,7 +8,7 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
 
   // Use environment variable for API base URL
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://week-5-web-sockets-assignment-khutso.onrender.com';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://mern-week5-assignment.onrender.com';
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

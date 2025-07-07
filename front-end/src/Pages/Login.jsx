@@ -7,7 +7,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://week-5-web-sockets-assignment-khutso.onrender.com';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://mern-week5-assignment.onrender.com';
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
